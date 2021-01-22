@@ -5,6 +5,7 @@ __pycache__/
 .git/
 .ipynb_checkpoints
 .ipynb_checkpoints/
+.DATA/*.npy
 
 # C extensions
 *.so
