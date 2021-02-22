@@ -65,7 +65,7 @@ if __name__ == '__main__':
     args, _ = parse_args()
     epochs = args.epochs
     
-    # Load Data
+    # Load train, validation and test sets from S3
     X_train, y_train = get_train_data(args.train)
     X_validation, y_validation = get_validation_data(args.val)
     X_test, y_test = get_test_data(args.test)
@@ -75,8 +75,10 @@ if __name__ == '__main__':
         TRAIN_BATCH_SIZE = 32
         data_generator = ImageDataGenerator(width_shift_range=0.1, height_shift_range=0.1, horizontal_flip=True)
         train_iterator = data_generator.flow(X_train, y_train, batch_size=TRAIN_BATCH_SIZE)
+        
         # Define Model Architecture
         model = Sequential()
+        
         # CONVOLUTIONAL LAYER 1
         model.add(Conv2D(filters=16, kernel_size=2, padding='same', activation='relu', input_shape=(32, 32, 3)))
         model.add(BatchNormalization())
@@ -99,8 +101,10 @@ if __name__ == '__main__':
         model.add(Dropout(0.4))
         model.add(Dense(10, activation='softmax'))
         model.summary()
+        
         # Compile Model
         model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+        
         # Train Model
         BATCH_SIZE = 32
         STEPS_PER_EPOCH = int(X_train.shape[0]/TRAIN_BATCH_SIZE)
@@ -113,8 +117,10 @@ if __name__ == '__main__':
                   callbacks=[], 
                   verbose=2, 
                   shuffle=True)
+        
         # Evaluate on Test Set
         result = model.evaluate(X_test, y_test, verbose=1)
         print(f'Test Accuracy: {result[1]}')
+        
         # Save Model
         model.save(f'{args.model_dir}/1')
