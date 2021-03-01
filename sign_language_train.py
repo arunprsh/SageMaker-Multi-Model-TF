@@ -24,7 +24,7 @@ tf.random.set_seed(SEED)
 
 def parse_args():
     parser = argparse.ArgumentParser() 
-    # hyperparameters sent by the client are passed as command-line arguments to the script
+    # Hyperparameters sent by the client are passed as command-line arguments to the script
     parser.add_argument('--epochs', type=int, default=1)
     parser.add_argument('--data', type=str, default=os.environ.get('SM_CHANNEL_DATA'))
     parser.add_argument('--output', type=str, default=os.environ.get('SM_CHANNEL_OUTPUT'))
